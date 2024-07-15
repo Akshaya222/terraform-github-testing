@@ -17,15 +17,8 @@ provider "github" {
   token = var.PAT
 }
 
-resource "github_repository" "repo" {
-  name        = "deployment-env"
-  description = "Repository managed by Terraform"
-  visibility  = "public"
-  auto_init   = true
-}
-
 resource "github_repository_environment" "Eventstore" {
-  count=1000
+  count=10
   environment = "production-${count.index}"
   repository  = "terraform-github-testing"
   deployment_branch_policy {
