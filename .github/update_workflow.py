@@ -21,7 +21,7 @@ response.raise_for_status()
 environments = [env['name'] for env in response.json()['environments']]
 
 # Define the path to deploy.yml
-workflow_file = ".github/workflows/deploy.yml"
+workflow_file = "workflows/deploy.yml"
 
 # Load the existing deploy.yml file
 try:
