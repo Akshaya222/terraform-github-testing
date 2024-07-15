@@ -2,7 +2,7 @@ name: Update Workflow Inputs
 
 on:
   schedule:
-    - cron: '* * * * *'  # Runs every hour
+    - cron: '*/5 * * * *'  # Runs every hour
 
 jobs:
   update-workflow:
