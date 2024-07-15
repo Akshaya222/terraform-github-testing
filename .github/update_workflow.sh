@@ -22,9 +22,10 @@ echo "file - $WORKFLOW_FILE"
 
 awk -v options="$OPTIONS" '
   /^options:/ {
-    print "options:"
     print options
     next
   }
   { print }
 ' "$WORKFLOW_FILE" > temp.yml && mv temp.yml "$WORKFLOW_FILE"
+
+echo "Workflow file updated with dynamic options."
