@@ -1,4 +1,4 @@
-name: "Terraform Plan"
+name: Terraform Plan and Apply
 
 on:
   push:
@@ -11,41 +11,44 @@ env:
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "GitHub-terraform-testing"
   CONFIG_DIRECTORY: "./"
-  PAT: "${{ secrets.PAT }}"
 
 jobs:
   terraform:
-    if: github.repository != 'hashicorp-education/learn-terraform-github-actions'
-    name: "Terraform Plan"
+    name: "Terraform Plan and Apply"
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Upload Configuration
-        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
-        id: plan-upload
+      - name: Configure Terraform CLI
+        uses: hashicorp/setup-terraform@v1
         with:
-          workspace: ${{ env.TF_WORKSPACE }}
-          directory: ${{ env.CONFIG_DIRECTORY }}
-          speculative: true
-          cli_config_credentials_token: ${{ secrets.PAT }}
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Create Plan Run
-        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
-        id: plan-run
-        with:
-          workspace: ${{ env.TF_WORKSPACE }}
-          configuration_version: ${{ steps.plan-upload.outputs.configuration_version_id }}
-          plan_only: true
-          cli_config_credentials_token: ${{ secrets.PAT }}
+      - name: Terraform Init
+        run: terraform init
 
-      - name: Get Plan Output
-        uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
-        id: plan-output
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -input=false -out=tfplan.out \
+            -var="PAT=${{ secrets.PAT }}" \
+            -var="github_token=${{ secrets.PAT }}"
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan.out
+
+      - name: Save Terraform State
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform state pull > terraform.tfstate
+
+      - name: Upload Terraform State
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v2
         with:
-          plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
-          cli_config_credentials_token: ${{ secrets.PAT }}
+          name: terraform-state
+          path: terraform.tfstate

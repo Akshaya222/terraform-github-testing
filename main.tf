@@ -13,7 +13,6 @@ variable "PAT" {
   type        = string
 }
 
-
 provider "github" {
   token = var.PAT
 }
