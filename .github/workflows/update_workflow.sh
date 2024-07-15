@@ -13,8 +13,12 @@ ENVIRONMENTS=$(curl -s -H "Authorization: token $TOKEN" \
 # Generate YAML formatted options list
 OPTIONS=$(printf "  - %s\n" $ENVIRONMENTS)
 
+echo "Options - $OPTIONS"
+
 # Define the workflow file path
 WORKFLOW_FILE=".github/workflows/deploy.yml"
+
+echo "file - $WORKFLOW_FILE"
 
 # Update the workflow YAML file with dynamic options
 awk -v options="$OPTIONS" '
