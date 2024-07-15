@@ -9,7 +9,7 @@ terraform {
 }
 
 variable "PAT" {
-  description = "GitHub Personal Access Token"
+  description = "GitHub PAT"
   type        = string
 }
 
