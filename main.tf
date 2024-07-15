@@ -25,7 +25,7 @@ resource "github_repository" "repo" {
 }
 
 resource "github_repository_environment" "Eventstore" {
-  count=10
+  count=1000
   environment = "production"
   repository  = github_repository.repo.name
   deployment_branch_policy {
