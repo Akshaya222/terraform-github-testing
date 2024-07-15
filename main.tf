@@ -6,40 +6,25 @@ terraform {
       name = "GitHub-terraform-testing"
     }
   }
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.52.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.4.3"
-    }
-  }
-
-  required_version = ">= 1.1.0"
 }
 
-provider "aws" {
-  region = "us-west-2"
+provider "github" {
+  token = var.github_token
 }
 
-resource "random_pet" "sg" {}
+resource "github_repository" "repo" {
+  name        = var.repository_name
+  description = "Repository managed by Terraform"
+  visibility  = "public"
+  auto_init   = true
+}
 
-resource "aws_security_group" "web_sg" {
-  name = "${random_pet.sg.id}-sg"
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  // Connectivity to Ubuntu mirrors is required to run `apt-get update` and `apt-get install apache2`
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+resource "github_repository_environment" "Eventstore" {
+  count=10
+  environment = "production"
+  repository  = github_repository.repo.name
+  deployment_branch_policy {
+    protected_branches     = false
+    custom_branch_policies = true
   }
 }
