@@ -34,22 +34,26 @@ except yaml.YAMLError as exc:
     print(exc)
     exit(1)
 
-# Ensure 'on' and 'workflow_dispatch' keys exist and are dictionaries
-if 'on' not in workflow or not isinstance(workflow['on'], dict) or \
-   'workflow_dispatch' not in workflow['on'] or not isinstance(workflow['on']['workflow_dispatch'], dict):
-    print("Error: 'on' or 'workflow_dispatch' key not found or not a dictionary in deploy.yml.")
-    exit(1)
-
-# Ensure 'inputs' key exists under 'workflow_dispatch' and is a dictionary
-if 'inputs' not in workflow['on']['workflow_dispatch'] or not isinstance(workflow['on']['workflow_dispatch']['inputs'], dict):
-    print("Error: 'inputs' key not found or not a dictionary under 'workflow_dispatch' in deploy.yml.")
-    exit(1)
-
-# Update options in StackName inputs
-if 'StackName' in workflow['on']['workflow_dispatch']['inputs']:
-    workflow['on']['workflow_dispatch']['inputs']['StackName']['options'] = environments
+# Check if 'on' key exists and is a dictionary
+if 'on' in workflow and isinstance(workflow['on'], dict):
+    # Check if 'workflow_dispatch' key exists under 'on' and is a dictionary
+    if 'workflow_dispatch' in workflow['on'] and isinstance(workflow['on']['workflow_dispatch'], dict):
+        # Check if 'inputs' key exists under 'workflow_dispatch' and is a dictionary
+        if 'inputs' in workflow['on']['workflow_dispatch'] and isinstance(workflow['on']['workflow_dispatch']['inputs'], dict):
+            # Update options in StackName inputs
+            if 'StackName' in workflow['on']['workflow_dispatch']['inputs']:
+                workflow['on']['workflow_dispatch']['inputs']['StackName']['options'] = environments
+            else:
+                print("Error: 'StackName' inputs not found under 'workflow_dispatch' in deploy.yml.")
+                exit(1)
+        else:
+            print("Error: 'inputs' key not found or not a dictionary under 'workflow_dispatch' in deploy.yml.")
+            exit(1)
+    else:
+        print("Error: 'workflow_dispatch' key not found or not a dictionary under 'on' in deploy.yml.")
+        exit(1)
 else:
-    print("Error: 'StackName' inputs not found under 'workflow_dispatch' in deploy.yml.")
+    print("Error: 'on' key not found or not a dictionary in deploy.yml.")
     exit(1)
 
 # Write the updated deploy.yml file
