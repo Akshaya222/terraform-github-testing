@@ -19,5 +19,5 @@ jobs:
       env:
         PAT: ${{ secrets.PAT }}
       run: |
-        chmod +x update_workflow.sh
-        ./update_workflow.sh $PAT
+        chmod +x .github/update_workflow.sh
+        .github/update_workflow.sh $PAT
