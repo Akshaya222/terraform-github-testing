@@ -20,7 +20,6 @@ WORKFLOW_FILE=".github/workflows/deploy.yml"
 
 echo "file - $WORKFLOW_FILE"
 
-# Update the workflow YAML file with dynamic options
 awk -v options="$OPTIONS" '
   /^options:/ {
     print "options:"
