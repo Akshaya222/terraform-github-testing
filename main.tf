@@ -8,6 +8,12 @@ terraform {
   }
 }
 
+variable "PAT" {
+  description = "GitHub Personal Access Token"
+  type        = string
+}
+
+
 provider "github" {
   token = var.PAT
 }
