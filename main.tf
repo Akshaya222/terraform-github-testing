@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "github" {
-  token = var.github_token
+  token = var.PAT
 }
 
 resource "github_repository" "repo" {

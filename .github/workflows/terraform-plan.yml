@@ -17,6 +17,8 @@ jobs:
     if: github.repository != 'hashicorp-education/learn-terraform-github-actions'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
+    env:
+      PAT: ${{ secrets.PAT }}
     permissions:
       contents: read
       pull-requests: write
