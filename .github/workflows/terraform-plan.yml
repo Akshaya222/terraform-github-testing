@@ -35,8 +35,7 @@ jobs:
         id: plan
         run: |
           terraform plan -input=false -out=tfplan.out \
-            -var="PAT=${{ secrets.PAT }}" \
-            -var="github_token=${{ secrets.PAT }}"
+            -var="PAT=${{ secrets.PAT }}" 
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
