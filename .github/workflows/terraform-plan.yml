@@ -11,14 +11,13 @@ env:
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "GitHub-terraform-testing"
   CONFIG_DIRECTORY: "./"
+  PAT: "${{ secrets.PAT }}"
 
 jobs:
   terraform:
     if: github.repository != 'hashicorp-education/learn-terraform-github-actions'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
-    env:
-      PAT: ${{ secrets.PAT }}
     permissions:
       contents: read
       pull-requests: write

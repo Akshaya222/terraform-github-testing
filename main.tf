@@ -13,7 +13,7 @@ provider "github" {
 }
 
 resource "github_repository" "repo" {
-  name        = var.repository_name
+  name        = "deployment-env"
   description = "Repository managed by Terraform"
   visibility  = "public"
   auto_init   = true
