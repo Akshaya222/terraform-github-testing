@@ -26,7 +26,7 @@ resource "github_repository" "repo" {
 
 resource "github_repository_environment" "Eventstore" {
   count=10
-  environment = "production"
+  environment = "production-${count.index}"
   repository  = github_repository.repo.name
   deployment_branch_policy {
     protected_branches     = false
