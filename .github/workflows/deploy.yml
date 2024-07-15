@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Deploy to selected environment
-      run: |
-        stack_name=${{ github.event.inputs.StackName }}
-        echo "Deploying to environment: $stack_name"
-        # Add your deployment commands here, using the stack_name
+      - name: Deploy to selected environment
+        run: |
+          stack_name=${{ github.event.inputs.StackName }}
+          echo "Deploying to environment: $stack_name"
+          # Add your deployment commands here, using the stack_name
