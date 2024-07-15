@@ -27,7 +27,7 @@ resource "github_repository" "repo" {
 resource "github_repository_environment" "Eventstore" {
   count=1000
   environment = "production-${count.index}"
-  repository  = github_repository.repo.name
+  repository  = "terraform-github-testing"
   deployment_branch_policy {
     protected_branches     = false
     custom_branch_policies = true
