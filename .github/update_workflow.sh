@@ -20,10 +20,18 @@ WORKFLOW_FILE=".github/workflows/deploy.yml"
 
 echo "file - $WORKFLOW_FILE"
 
+# Use awk to update options under StackName in deploy.yml
 awk -v options="$OPTIONS" '
-  /^options:/ {
-    print options
-    next
+  /^ *StackName:/ {
+    print $0
+    getline
+    if ($0 ~ /^ *options:/) {
+      print options
+      skip = 1
+    }
   }
-  { print }
+  !skip { print }
+  { skip = 0 }
 ' "$WORKFLOW_FILE" > temp.yml && mv temp.yml "$WORKFLOW_FILE"
+
+echo "Workflow file updated with dynamic options."
