@@ -18,6 +18,6 @@ jobs:
 
       - name: Deploy to selected environment
         run: |
-          stack_name=${{ github.event.inputs.StackName }}
+          stack_name=${{ github.event.inputs.environment }}
           echo "Deploying to environment: $stack_name"
           # Add your deployment commands here, using the stack_name
