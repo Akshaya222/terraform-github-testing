@@ -8,6 +8,10 @@ on:
         description: Environment Name
         options:
           - placeholder-option
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
 
 jobs:
   deploy:
