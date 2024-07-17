@@ -3,13 +3,8 @@ name: Deploy Docker Image
 on:
   workflow_dispatch:
     inputs:
-      StackName:
-        type: choice
-        description: Environment Name
-        options:
-          - placeholder-option
       environment:
-        description: 'Environment to run tests against'
+        description: 'Environment to deploy'
         type: environment
         required: true
 
