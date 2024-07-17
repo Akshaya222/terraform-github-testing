@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       StackName:
-        type: env
+        type: choice
+        description: Environment Name
+        options:
+          - placeholder-option
 
 jobs:
   deploy:
